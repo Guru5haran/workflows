@@ -1,0 +1,19 @@
+    name: CI/CD Pipeline
+
+     on:
+       push:
+         branches:
+           - main
+
+     jobs:
+       build:
+         runs-on: ubuntu-latest
+
+         steps:
+           - name: Checkout code
+             uses: actions/checkout@v2
+
+           - name: Deploy to AWS EC2
+             run: |
+               aws s3 sync . s3://your-bucket-name
+               ssh -i /path/to/your/key.pem ec2-user@your-ec2-public-ip 'sudo yum update -y && sudo yum install httpd -y && sudo systemctl restart httpd'
